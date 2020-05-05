@@ -1,11 +1,13 @@
 import React from "react";
 
+import AppRouter from "./routers";
+import GlobalStyle from "./styles/global.css";
+
 function App() {
   return (
     <div>
-      <header>
-        <h1>teste</h1>
-      </header>
+      <GlobalStyle />
+      <AppRouter />
     </div>
   );
 }
