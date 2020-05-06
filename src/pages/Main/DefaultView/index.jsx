@@ -5,26 +5,30 @@ import {
   TableHead,
   TableRow,
   Checkbox,
+  Button,
 } from "@material-ui/core";
+import { Delete, Edit } from "@material-ui/icons";
+import { connect } from "react-redux";
+
+import { changeUserCheckbox, removeUsers } from "../../../redux/actions";
 
 import { Container, TableContainer, StyledTable } from "./style.css";
 
 class DefaultView extends Component {
-  filterUsers = (user) =>
-    user.firstName
-      .toLowerCase()
-      .includes(this.props.searchValue.toLowerCase()) ||
-    user.lastName.toLowerCase().includes(this.props.searchValue.toLowerCase());
+  removeItem = (user) => {
+    this.props.removeUsers([user.id]);
+  };
 
   renderRows = () => {
     const { users } = this.props;
-    const searchedUsers = users.filter(this.filterUsers);
-    return searchedUsers.map((row) => (
+    return users.map((row) => (
       <TableRow key={row.id}>
         <TableCell align="center">
           <Checkbox
             checked={row.selected || false}
-            onChange={(e) => this.props.selectUser(row, e.target.checked)}
+            onChange={(e) =>
+              this.props.changeUserCheckbox(row, e.target.checked)
+            }
             color="primary"
           />
         </TableCell>
@@ -32,7 +36,19 @@ class DefaultView extends Component {
           {`${row.firstName} ${row.lastName}`}
         </TableCell>
         <TableCell align="center">{row.age}</TableCell>
-        <TableCell align="center">Show | Delete</TableCell>
+        <TableCell align="center">
+          <Button variant="contained" color="primary" className="actions-btn">
+            <Edit />
+          </Button>
+          <Button
+            onClick={() => this.removeItem(row)}
+            variant="contained"
+            color="secondary"
+            className="actions-btn"
+          >
+            <Delete />
+          </Button>
+        </TableCell>
       </TableRow>
     ));
   };
@@ -58,4 +74,4 @@ class DefaultView extends Component {
   }
 }
 
-export default DefaultView;
+export default connect(null, { changeUserCheckbox, removeUsers })(DefaultView);
