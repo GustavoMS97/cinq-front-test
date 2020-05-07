@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { Container, StyledForm, HeaderContainer } from "./style.css";
 import { fetchUsers, removeUsers } from "../../redux/actions";
 import DefaultView from "./DefaultView";
+import SmallView from "./SmallView";
 import { differentArrayOfObjects } from "../../utils/Object";
 
 class Main extends Component {
@@ -13,6 +14,7 @@ class Main extends Component {
   async componentDidMount() {
     this.props.fetchUsers();
     window.addEventListener("resize", this.updateWindowDimensions);
+    this.updateWindowDimensions();
   }
 
   componentDidUpdate() {
@@ -102,9 +104,19 @@ class Main extends Component {
           >
             Download
           </Button>
+          <Button
+            variant="contained"
+            color="default"
+            onClick={() => {
+              localStorage.clear();
+              this.props.fetchUsers();
+            }}
+          >
+            Reset List
+          </Button>
         </HeaderContainer>
         {this.state.smallerView ? (
-          true
+          <SmallView users={this.state.users.filter(this.filterUsers)} />
         ) : (
           <DefaultView users={this.state.users.filter(this.filterUsers)} />
         )}

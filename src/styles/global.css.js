@@ -13,7 +13,7 @@ export default createGlobalStyle`
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
   }
-  html, body, #root {
+  html, body, #root, #app-root {
     height: 100%;
   }
 

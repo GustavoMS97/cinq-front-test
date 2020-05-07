@@ -9,14 +9,24 @@ import {
 } from "@material-ui/core";
 import { Delete, Edit } from "@material-ui/icons";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 
-import { changeUserCheckbox, removeUsers } from "../../../redux/actions";
+import {
+  changeUserCheckbox,
+  removeUsers,
+  selectUser,
+} from "../../../redux/actions";
 
 import { Container, TableContainer, StyledTable } from "./style.css";
 
 class DefaultView extends Component {
   removeItem = (user) => {
     this.props.removeUsers([user.id]);
+  };
+
+  onSelectRowToEdit = (user) => {
+    this.props.selectUser(user);
+    this.props.history.push("/details");
   };
 
   renderRows = () => {
@@ -37,7 +47,12 @@ class DefaultView extends Component {
         </TableCell>
         <TableCell align="center">{row.age}</TableCell>
         <TableCell align="center">
-          <Button variant="contained" color="primary" className="actions-btn">
+          <Button
+            variant="contained"
+            color="primary"
+            className="actions-btn"
+            onClick={() => this.onSelectRowToEdit(row)}
+          >
             <Edit />
           </Button>
           <Button
@@ -74,4 +89,6 @@ class DefaultView extends Component {
   }
 }
 
-export default connect(null, { changeUserCheckbox, removeUsers })(DefaultView);
+export default connect(null, { changeUserCheckbox, removeUsers, selectUser })(
+  withRouter(DefaultView)
+);

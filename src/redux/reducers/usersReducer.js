@@ -3,7 +3,9 @@ import {
   SELECT_USER,
   REMOVE_USERS,
   CHANGE_USER_CHECKBOX,
+  UPDATE_USER,
 } from "../actions/types";
+import { USER_LIST } from "../../static/localstorage";
 
 const INITIAL_STATE = {
   userList: [],
@@ -29,17 +31,25 @@ export default function (state = INITIAL_STATE, action) {
             : removeUsersFromList(state.selectedUsers, [
                 action.payload.user.id,
               ]),
-          userList: updateUserFromList(
-            state.userList,
-            action.payload.user.id,
-            action.payload.boxState
-          ),
+          userList: updateUserFromList(state.userList, action.payload.user.id, {
+            ...action.payload.user,
+            selected: action.payload.boxState,
+          }),
         };
       case REMOVE_USERS:
         return {
           ...state,
           selectedUsers: [],
           userList: removeUsersFromList(state.userList, action.payload),
+        };
+      case UPDATE_USER:
+        return {
+          ...state,
+          userList: updateUserFromList(
+            state.userList,
+            action.payload.id,
+            action.payload
+          ),
         };
       default:
         return state;
@@ -66,13 +76,21 @@ const removeUsersFromList = (list, userIds) => {
       }
     }
   });
+  updateStoredList(list, USER_LIST);
   return list;
 };
 
-const updateUserFromList = (list, id, state) =>
-  list.map((u) => {
+const updateUserFromList = (list, id, updatedUser) => {
+  const newList = list.map((u) => {
     if (u.id === id) {
-      u.selected = state;
+      u = updatedUser;
     }
     return u;
   });
+  updateStoredList(newList, USER_LIST);
+  return newList;
+};
+
+const updateStoredList = (list, key) => {
+  localStorage.setItem(key, JSON.stringify(list));
+};

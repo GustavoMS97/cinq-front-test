@@ -3,6 +3,7 @@ import {
   SELECT_USER,
   REMOVE_USERS,
   CHANGE_USER_CHECKBOX,
+  UPDATE_USER,
 } from "./types";
 import { getUsers } from "../../functions/User";
 
@@ -13,6 +14,18 @@ export const fetchUsers = () => async (dispatch) => {
   try {
     const users = await getUsers();
     dispatch({ type: FETCH_USERS_SUCCESS, payload: users });
+  } catch (error) {
+    console.log(`fetchUsers: ${error}`);
+  }
+};
+
+/**
+ * Método assincrono para buscar os usuários.
+ */
+export const updateUser = (user) => async (dispatch) => {
+  try {
+    // Aqui faria chamada de atualização.
+    dispatch({ type: UPDATE_USER, payload: user });
   } catch (error) {
     console.log(`fetchUsers: ${error}`);
   }
