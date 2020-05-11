@@ -25,7 +25,6 @@ class Main extends Component {
         differentArrayOfObjects(this.props.users.userList, this.state.users)
       ) {
         this.setState({ users: this.props.users.userList });
-        console.log(this.props.users.userList);
       }
 
       if (
@@ -36,7 +35,6 @@ class Main extends Component {
         )
       ) {
         this.setState({ selectedUsers: this.props.users.selectedUsers });
-        console.log(this.props.users.selectedUsers);
       }
     }
   }

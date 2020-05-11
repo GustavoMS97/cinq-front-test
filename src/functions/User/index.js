@@ -9,6 +9,5 @@ export const getUsers = async () => {
   } else {
     userList = users;
   }
-  console.log(userList);
   return userList;
 };
